@@ -186,8 +186,8 @@ MonoBehaviour:
     y: 0
     width: 284
     height: 412.5
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -226,7 +226,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: da38ffff743bffff1a3cffff3e3effff8cf1ffff38f2ffff16fbffff509f0000
+      m_ExpandedIDs: e01afcffaa20fcffd625fcfff826fcfffc4cfcffdeabfcff54b9fcff40fafcfffa03fdffae39fdffaa54fdff589efdff50c5fdffa6f0fdff8cf2fdffea0efeff3210feff6412feff5413feffda38ffff743bffff1a3cffff3e3effff8cf1ffff38f2ffff16fbffff509f000082af0000fab00000f4b70000e2b80000e2bf000020c00000d4cc000014cd00001ecf0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -242,7 +242,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 5}
+        m_ClientGUIView: {fileID: 0}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -407,12 +407,12 @@ MonoBehaviour:
       layout: 4
     - dockPosition: 1
       containerId: overlay-container--right
-      floating: 0
+      floating: 1
       collapsed: 0
       displayed: 0
-      snapOffset: {x: 0, y: 0}
+      snapOffset: {x: -155, y: -107.5}
       snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 0
+      snapCorner: 3
       id: Scene View/Camera
       index: 1
       layout: 4
@@ -525,9 +525,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 1.7457979, y: 1.2251879, z: -1.5520195}
+    m_Target: {x: -1.0023733, y: 1.4893007, z: 253.81427}
     speed: 2
-    m_Value: {x: 1.7457979, y: 1.2251879, z: -1.5520195}
+    m_Value: {x: -1.0023733, y: 1.4893007, z: 253.81427}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -578,9 +578,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 7.2315216
+    m_Target: 7.694953
     speed: 2
-    m_Value: 7.2315216
+    m_Value: 7.694953
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -701,22 +701,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Packages/com.unity.2d.animation
+    - Assets/Scenes
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Packages/com.unity.2d.animation
+  - Assets/Scenes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: /Users/olinjohnson/Desktop/Gamedev/othello
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 7e850000
-    m_LastClickedID: 34174
-    m_ExpandedIDs: 00000000fc6f0000567b000088800000d885000086860000308d000000ca9a3bffffff7f
+    m_SelectedIDs: fe6f0000
+    m_LastClickedID: 28670
+    m_ExpandedIDs: 00000000fc6f0000567b0000d885000086860000308d000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -744,7 +744,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000fc6f0000567b000088800000d885000086860000308d000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000fc6f0000567b0000d885000086860000308d000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c623000076720000a07f000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
