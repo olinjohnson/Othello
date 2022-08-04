@@ -20,6 +20,17 @@ public class BoardBehavior : MonoBehaviour
         GenerateTileGrid();
     }
 
+
+    void InitiateAIGame()
+    {
+        StartCoroutine(AIMoveCycle());
+    }
+
+    IEnumerator AIMoveCycle()
+    {
+        yield return new WaitForSeconds(1);
+    }
+
     void GenerateTileGrid()
     {
         for(int i = 0; i < height; i++)
