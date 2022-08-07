@@ -55,17 +55,46 @@ public class Game
 
     public Board MakeMove(Board b, int m)
     {
-        Board boardCopy = new Board(b.white_pieces, b.black_pieces, !b.turn);
-        ulong mask = (ulong)1 << m;
+        // Determine player and opponent pieces
+        ulong pPieces, oPieces;
         if(b.turn)
         {
-            boardCopy.black_pieces |= mask;
+            pPieces = b.black_pieces;
+            oPieces = b.white_pieces;
         }
         else
         {
-            boardCopy.white_pieces |= mask;
+            pPieces = b.white_pieces;
+            oPieces = b.black_pieces;
         }
 
-        return boardCopy;
+        // Flip pieces
+        ulong mask = (ulong)1 << m;
+        pPieces |= mask;
+
+        // Execute flip rays
+        ulong flippers = 0;
+        for(int i = 0; i < 2; i++)
+        {
+            ulong neighbor = ((mask & direction_masks[i]) << direction_offsets[i]) & oPieces;
+
+            while(neighbor > 0)
+            {
+                flippers |= neighbor;
+                neighbor = ((neighbor & direction_masks[i]) << direction_offsets[i]) & oPieces;
+            }
+
+            neighbor = ((mask & direction_masks[i + 2]) >> direction_offsets[i]) & oPieces;
+
+            while (neighbor > 0)
+            {
+                flippers |= neighbor;
+                neighbor = ((neighbor & direction_masks[i]) >> direction_offsets[i]) & oPieces;
+            }
+        }
+        oPieces ^= flippers;
+        pPieces |= flippers;
+
+        return b.turn ? new Board(oPieces, pPieces, !b.turn) : new Board(pPieces, oPieces, !b.turn);
     }
 }

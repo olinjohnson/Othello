@@ -56,8 +56,8 @@ public class BoardBehavior : MonoBehaviour
             else
             {
                 HighlightValidMoves(game.GetValidMoves(board));
-                yield return new WaitForSeconds(2);
-                board.turn = false;
+                yield return new WaitUntil(() => !board.turn);
+                UpdateBoard(board);
                 foreach (Transform h in highlights.transform)
                 {
                     Destroy(h.gameObject);
