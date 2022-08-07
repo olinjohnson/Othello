@@ -76,25 +76,34 @@ public class Game
         ulong flippers = 0;
         for(int i = 0; i < 2; i++)
         {
-            ulong neighbor = ((mask & direction_masks[i]) << direction_offsets[i]) & oPieces;
+            ulong acreage = (mask & direction_masks[i]) << direction_offsets[i];
+            ulong temp_flippers = 0;
 
-            while(neighbor > 0)
+            while ((acreage & oPieces) > 0 && (acreage & pPieces) == 0)
             {
-                flippers |= neighbor;
-                neighbor = ((neighbor & direction_masks[i]) << direction_offsets[i]) & oPieces;
+                temp_flippers |= (acreage & oPieces);
+                acreage = (acreage & direction_masks[i]) << direction_offsets[i];
+            }
+            if((acreage & pPieces) > 0)
+            {
+                flippers |= temp_flippers;
             }
 
-            neighbor = ((mask & direction_masks[i + 2]) >> direction_offsets[i]) & oPieces;
+            acreage = (mask & direction_masks[i + 2]) >> direction_offsets[i];
 
-            while (neighbor > 0)
+            while ((acreage & oPieces) > 0 && (acreage & pPieces) == 0)
             {
-                flippers |= neighbor;
-                neighbor = ((neighbor & direction_masks[i]) >> direction_offsets[i]) & oPieces;
+                temp_flippers |= (acreage & oPieces);
+                acreage = (acreage & direction_masks[i + 2]) >> direction_offsets[i];
+            }
+            if ((acreage & pPieces) > 0)
+            {
+                flippers |= temp_flippers;
             }
         }
         oPieces ^= flippers;
         pPieces |= flippers;
 
-        return b.turn ? new Board(oPieces, pPieces, !b.turn) : new Board(pPieces, oPieces, !b.turn);
+        return b.turn ? new Board(oPieces, pPieces, false) : new Board(pPieces, oPieces, true);
     }
 }
