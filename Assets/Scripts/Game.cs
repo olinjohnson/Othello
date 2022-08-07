@@ -26,10 +26,19 @@ public class Game
         ulong valid_moves = 0;
 
         ulong empty_tiles = ~(b.black_pieces | b.white_pieces);
-        ulong pPieces = !b.turn ? b.white_pieces : b.black_pieces;
-        ulong oPieces = !b.turn ? b.black_pieces : b.white_pieces;
+        ulong pPieces, oPieces;
+        if (b.turn)
+        {
+            pPieces = b.black_pieces;
+            oPieces = b.white_pieces;
+        }
+        else
+        {
+            pPieces = b.white_pieces;
+            oPieces = b.black_pieces;
+        }
         // North + West moves
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
             ulong neighbor = ((pPieces & direction_masks[i]) << direction_offsets[i]) & oPieces;
 
@@ -73,15 +82,16 @@ public class Game
         pPieces |= mask;
 
         // Execute flip rays
+        // Room for optimization
         ulong flippers = 0;
         for(int i = 0; i < 2; i++)
         {
             ulong acreage = (mask & direction_masks[i]) << direction_offsets[i];
             ulong temp_flippers = 0;
-
-            while ((acreage & oPieces) > 0 && (acreage & pPieces) == 0)
+            
+            while ((acreage & oPieces) > 0)
             {
-                temp_flippers |= (acreage & oPieces);
+                temp_flippers |= acreage & oPieces;
                 acreage = (acreage & direction_masks[i]) << direction_offsets[i];
             }
             if((acreage & pPieces) > 0)
@@ -90,10 +100,11 @@ public class Game
             }
 
             acreage = (mask & direction_masks[i + 2]) >> direction_offsets[i];
+            temp_flippers = 0;
 
-            while ((acreage & oPieces) > 0 && (acreage & pPieces) == 0)
+            while ((acreage & oPieces) > 0)
             {
-                temp_flippers |= (acreage & oPieces);
+                temp_flippers |= acreage & oPieces;
                 acreage = (acreage & direction_masks[i + 2]) >> direction_offsets[i];
             }
             if ((acreage & pPieces) > 0)

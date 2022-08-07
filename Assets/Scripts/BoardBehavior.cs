@@ -44,7 +44,9 @@ public class BoardBehavior : MonoBehaviour
             // White to move
             if(!board.turn)
             {
-                HighlightValidMoves(game.GetValidMoves(board));
+                ulong valid_moves = game.GetValidMoves(board);
+                HighlightValidMoves(valid_moves);
+                if (valid_moves == 0) { board.turn = true; }
                 yield return new WaitUntil(() => board.turn);
                 UpdateBoard(board);
                 foreach (Transform h in highlights.transform)
@@ -55,7 +57,9 @@ public class BoardBehavior : MonoBehaviour
             // Black to move
             else
             {
-                HighlightValidMoves(game.GetValidMoves(board));
+                ulong valid_moves = game.GetValidMoves(board);
+                HighlightValidMoves(valid_moves);
+                if(valid_moves == 0) { board.turn = false; }
                 yield return new WaitUntil(() => !board.turn);
                 UpdateBoard(board);
                 foreach (Transform h in highlights.transform)
