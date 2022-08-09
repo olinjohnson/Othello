@@ -10,12 +10,45 @@ public class Minimax
      */
 
     public Game game;
+    public int depth;
 
-    public Minimax()
+    public Minimax(int d)
     {
         game = new Game();
+        depth = d;
     }
 
+    public int FindIdealMove(Board b)
+    {
+
+    }
+
+    public int Run(Board ghostMove, int d, int current_d)
+    {
+        // Check for terminal state
+        if(game.DetectEnding(ghostMove))
+        {
+            return Evaluate(ghostMove) * 100;
+        }
+        else if(d == current_d)
+        {
+            return Evaluate(ghostMove);
+        }
+
+        // Expand leaf nodes and return
+        ulong valid_moves = game.GetValidMoves(ghostMove);
+        for(int i = 0; i < 64; i++)
+        {
+            if((valid_moves & ((ulong)1 << i)) > 0)
+            {
+                int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1);
+                if(ghostMove.turn)
+                {
+
+                }
+            }
+        }
+    }
 
     int Evaluate(Board b)
     {
@@ -36,13 +69,6 @@ public class Minimax
             white >>= 1;
         }
 
-        if (game.DetectEnding(b))
-        {
-            return (b_count - w_count) * 100;
-        }
-        else
-        {
-            return (b_count - w_count);
-        }
+        return b_count - w_count;
     }
 }
