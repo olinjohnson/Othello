@@ -15,10 +15,13 @@ public class Game
         {
             return true;
         }
-        else
+
+        if(GetValidMoves(b) == 0 && GetValidMoves(new Board(b.white_pieces, b.black_pieces, !b.turn)) == 0)
         {
-            return false;
+            return true;
         }
+
+        return false;
     }
 
     public ulong GetValidMoves(Board b)
