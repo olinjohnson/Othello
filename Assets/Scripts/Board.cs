@@ -9,7 +9,7 @@ public class Board
     {
         white_pieces = 0x1008000000;
         black_pieces = 0x810000000;
-        turn = false;
+        turn = true;
     }
     public Board(ulong w, ulong b, bool t)
     {
