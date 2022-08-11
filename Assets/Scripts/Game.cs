@@ -120,4 +120,15 @@ public class Game
 
         return b.turn ? new Board(oPieces, pPieces, false) : new Board(pPieces, oPieces, true);
     }
+
+    public Board MakeAIMove(Board b)
+    {
+        if(!b.turn)
+        {
+            Minimax algo = new Minimax(10);
+            int idealMove = algo.FindIdealMove(b);
+            return MakeMove(b, idealMove);
+        }
+        throw new ArgumentException();
+    }
 }

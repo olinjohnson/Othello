@@ -44,15 +44,9 @@ public class BoardBehavior : MonoBehaviour
             // White to move
             if(!board.turn)
             {
-                ulong valid_moves = game.GetValidMoves(board);
-                HighlightValidMoves(valid_moves);
-                if (valid_moves == 0) { board.turn = true; }
-                yield return new WaitUntil(() => board.turn);
+                yield return new WaitForSeconds(0.5f);
+                board = game.MakeAIMove(board);
                 UpdateBoard(board);
-                foreach (Transform h in highlights.transform)
-                {
-                    Destroy(h.gameObject);
-                }
             }
             // Black to move
             else
