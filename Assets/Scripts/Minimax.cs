@@ -5,15 +5,21 @@ using UnityEngine;
 
 public class Minimax
 {
-    /*
-     * The player (black), is trying to maximize the score,
-     * While the computer (white) tries to minimize it.
-     */
-
     public Game game;
     public int depth;
 
     public uint nodes_searched;
+    public int[] position_offsets = new int[]
+    {
+        -10, -5, -5, -5, -5, -5, -5, -10,
+        -5, 0, 0, 0, 0, 0, 0, -5,
+        -5, 0, 0, 0, 0, 0, 0, -5,
+        -5, 0, 0, 0, 0, 0, 0, -5,
+        -5, 0, 0, 0, 0, 0, 0, -5,
+        -5, 0, 0, 0, 0, 0, 0, -5,
+        -5, 0, 0, 0, 0, 0, 0, -5,
+        -10, -5, -5, -5, -5, -5, -5, -10,
+    };
 
     public Minimax(int d)
     {
@@ -27,13 +33,15 @@ public class Minimax
         var watch = System.Diagnostics.Stopwatch.StartNew();
 
         ulong valid_moves = game.GetValidMoves(b);
-        int least = 1000;
+        int least = 10000;
         int[] scores = new int[64];
+        Array.Fill(scores, 10000);
+
         for (int i = 0; i < 64; i++)
         {
             if ((valid_moves & ((ulong)1 << i)) > 0)
             {
-                int val = Run(game.MakeMove(b, i), depth, 1);
+                int val = Run(game.MakeMove(b, i), depth, 1) + position_offsets[i];
                 least = Math.Min(least, val);
                 scores[i] = val;
             }
@@ -43,6 +51,7 @@ public class Minimax
         var elapsed = watch.ElapsedMilliseconds;
         Debug.Log($"Searched: {nodes_searched} --- Elapsed: {elapsed}ms");
 
+        Debug.Log($"[{string.Join(", ", scores)}]");
         return Array.IndexOf(scores, least);
     }
 
@@ -52,37 +61,40 @@ public class Minimax
         // Check for terminal state
         if(game.DetectEnding(ghostMove))
         {
-            return Evaluate(ghostMove) * 100;
+            return Evaluate(ghostMove, current_d) * 100;
         }
+        // Check if max depth reached
         else if(d == current_d)
         {
-            return Evaluate(ghostMove);
+            return Evaluate(ghostMove, current_d);
         }
-
-        // Expand leaf nodes and return
-        ulong valid_moves = game.GetValidMoves(ghostMove);
-        int value = ghostMove.turn ? -1000 : 1000;
-        for(int i = 0; i < 64; i++)
+        else
         {
-            if((valid_moves & ((ulong)1 << i)) > 0)
+            ulong valid_moves = game.GetValidMoves(ghostMove);
+            // If no valid moves
+            if(valid_moves == 0)
             {
-                int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1);
-                // Player turn - MAX
-                if(ghostMove.turn)
+                return Run(new Board(ghostMove.white_pieces, ghostMove.black_pieces, !ghostMove.turn), d, current_d + 1);
+            }
+            else
+            {
+                // Expand leaf nodes and return
+                int value = ghostMove.turn ? -10000 : 10000;
+                for (int i = 0; i < 64; i++)
                 {
-                    value = Math.Max(value, child);
+                    if ((valid_moves & ((ulong)1 << i)) > 0)
+                    {
+                        int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1) + position_offsets[i];
+                        // Player turn - MAX | AI turn - MIN
+                        value = ghostMove.turn ? Math.Max(value, child) : Math.Min(value, child);
+                    }
                 }
-                // AI turn - MIN
-                else
-                {
-                    value = Math.Min(value, child);
-                }
+                return value;
             }
         }
-        return value;
     }
 
-    int Evaluate(Board b)
+    int Evaluate(Board b, int current_d)
     {
         // Count set bits
         int w_count = 0;
@@ -101,6 +113,6 @@ public class Minimax
             white >>= 1;
         }
 
-        return b_count - w_count;
+        return (b_count - w_count) + current_d;
     }
 }

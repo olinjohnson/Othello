@@ -45,8 +45,17 @@ public class BoardBehavior : MonoBehaviour
             if(!board.turn)
             {
                 yield return new WaitForSeconds(0.5f);
-                board = game.MakeAIMove(board);
-                UpdateBoard(board);
+                ulong valid_moves = game.GetValidMoves(board);
+                if (valid_moves == 0)
+                {
+                    Debug.Log("no valid moves");
+                    board.turn = true;
+                }
+                else
+                {
+                    board = game.MakeAIMove(board);
+                    UpdateBoard(board);
+                }
             }
             // Black to move
             else
