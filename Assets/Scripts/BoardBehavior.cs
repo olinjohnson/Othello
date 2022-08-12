@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class BoardBehavior : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class BoardBehavior : MonoBehaviour
     private static int width = 8;
     private static float margin = 0.05f;
     private float y_offset = -3.5f - (3 * margin);
-    private float x_offset = 3.5f + (3 * margin);
+    private float x_offset = -0.268138f + (3 * margin);
 
     public GameObject boardContainer;
     public GameObject tilePrefab;
@@ -17,6 +18,9 @@ public class BoardBehavior : MonoBehaviour
 
     public GameObject blackCoinPrefab;
     public GameObject whiteCoinPrefab;
+
+    public TextMeshProUGUI turnTextTitle;
+    public TextMeshProUGUI turnTextSubtitle;
 
     public static Board board;
     public static Game game;
@@ -28,13 +32,24 @@ public class BoardBehavior : MonoBehaviour
         game = new Game();
         board = new Board();
 
-        InitiateAIGame();
+        if(PlayerPrefs.AIOpponent)
+        {
+            InitiateAIGame();
+        }
+        else
+        {
+            InitiatePlayerGame();
+        }
     }
 
 
     void InitiateAIGame()
     {
         StartCoroutine(AIMoveCycle());
+    }
+    void InitiatePlayerGame()
+    {
+        StartCoroutine(PlayerMoveCycle());
     }
 
     IEnumerator AIMoveCycle()
@@ -44,15 +59,19 @@ public class BoardBehavior : MonoBehaviour
             // White to move
             if(!board.turn)
             {
-                yield return new WaitForSeconds(0.5f);
                 ulong valid_moves = game.GetValidMoves(board);
                 if (valid_moves == 0)
                 {
-                    Debug.Log("no valid moves");
                     board.turn = true;
+                    turnTextTitle.text = "AI Has no valid moves";
+                    turnTextSubtitle.text = "Please move again";
+                    yield return new WaitForSeconds(1.5f);
                 }
                 else
                 {
+                    turnTextTitle.text = "AI is thinking";
+                    turnTextSubtitle.text = "Please wait";
+                    yield return new WaitForSeconds(0.5f);
                     board = game.MakeAIMove(board);
                     UpdateBoard(board);
                 }
@@ -62,14 +81,110 @@ public class BoardBehavior : MonoBehaviour
             {
                 ulong valid_moves = game.GetValidMoves(board);
                 HighlightValidMoves(valid_moves);
-                if(valid_moves == 0) { board.turn = false; }
-                yield return new WaitUntil(() => !board.turn);
-                UpdateBoard(board);
-                foreach (Transform h in highlights.transform)
+                if(valid_moves == 0)
                 {
-                    Destroy(h.gameObject);
+                    board.turn = false;
+                    turnTextTitle.text = "No valid moves";
+                    turnTextSubtitle.text = "AI will move again";
+                    yield return new WaitForSeconds(1.5f);
+                }
+                else
+                {
+                    turnTextTitle.text = "Your turn";
+                    turnTextSubtitle.text = "Click to make a move";
+                    yield return new WaitUntil(() => !board.turn);
+                    UpdateBoard(board);
+                    foreach (Transform h in highlights.transform)
+                    {
+                        Destroy(h.gameObject);
+                    }
                 }
             }
+        }
+
+        int winner = game.getWinner(board);
+        turnTextSubtitle.text = "";
+        if (winner == 0)
+        {
+            turnTextTitle.text = "AI Wins!";
+        }
+        else if(winner == 1)
+        {
+            turnTextTitle.text = "You Win!";
+        }
+        else
+        {
+            turnTextTitle.text = "Tie!";
+        }
+    }
+
+    IEnumerator PlayerMoveCycle()
+    {
+        while (!game.DetectEnding(board))
+        {
+            // White to move
+            if (!board.turn)
+            {
+                ulong valid_moves = game.GetValidMoves(board);
+                HighlightValidMoves(valid_moves);
+                if (valid_moves == 0)
+                {
+                    board.turn = true;
+                    turnTextTitle.text = "Player 2 has no moves";
+                    turnTextSubtitle.text = "Player 1 will move again";
+                    yield return new WaitForSeconds(2);
+                }
+                else
+                {
+                    turnTextTitle.text = "Player 2's turn";
+                    turnTextSubtitle.text = "Click to make a move";
+                    yield return new WaitUntil(() => board.turn);
+                    UpdateBoard(board);
+                    foreach (Transform h in highlights.transform)
+                    {
+                        Destroy(h.gameObject);
+                    }
+                }
+            }
+            // Black to move
+            else
+            {
+                ulong valid_moves = game.GetValidMoves(board);
+                HighlightValidMoves(valid_moves);
+                if (valid_moves == 0)
+                {
+                    board.turn = false;
+                    turnTextTitle.text = "Player 1 has no moves";
+                    turnTextSubtitle.text = "Player 2 will move again";
+                    yield return new WaitForSeconds(2);
+                }
+                else
+                {
+                    turnTextTitle.text = "Player 1's turn";
+                    turnTextSubtitle.text = "Click to make a move";
+                    yield return new WaitUntil(() => !board.turn);
+                    UpdateBoard(board);
+                    foreach (Transform h in highlights.transform)
+                    {
+                        Destroy(h.gameObject);
+                    }
+                }
+            }
+        }
+
+        int winner = game.getWinner(board);
+        turnTextSubtitle.text = "";
+        if (winner == 0)
+        {
+            turnTextTitle.text = "Player 2 Wins!";
+        }
+        else if (winner == 1)
+        {
+            turnTextTitle.text = "Player 1 Wins!";
+        }
+        else
+        {
+            turnTextTitle.text = "Tie!";
         }
     }
 

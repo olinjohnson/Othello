@@ -11,14 +11,14 @@ public class Minimax
     public uint nodes_searched;
     public int[] position_offsets = new int[]
     {
-        -10, -5, -5, -5, -5, -5, -5, -10,
+        -15, -5, -5, -5, -5, -5, -5, -15,
         -5, 0, 0, 0, 0, 0, 0, -5,
         -5, 0, 0, 0, 0, 0, 0, -5,
         -5, 0, 0, 0, 0, 0, 0, -5,
         -5, 0, 0, 0, 0, 0, 0, -5,
         -5, 0, 0, 0, 0, 0, 0, -5,
         -5, 0, 0, 0, 0, 0, 0, -5,
-        -10, -5, -5, -5, -5, -5, -5, -10,
+        -15, -5, -5, -5, -5, -5, -5, -15,
     };
 
     public Minimax(int d)
@@ -51,7 +51,6 @@ public class Minimax
         var elapsed = watch.ElapsedMilliseconds;
         Debug.Log($"Searched: {nodes_searched} --- Elapsed: {elapsed}ms");
 
-        Debug.Log($"[{string.Join(", ", scores)}]");
         return Array.IndexOf(scores, least);
     }
 
@@ -84,9 +83,18 @@ public class Minimax
                 {
                     if ((valid_moves & ((ulong)1 << i)) > 0)
                     {
-                        int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1) + position_offsets[i];
-                        // Player turn - MAX | AI turn - MIN
-                        value = ghostMove.turn ? Math.Max(value, child) : Math.Min(value, child);
+                        // Player turn - MAX 
+                        if (ghostMove.turn)
+                        {
+                            int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1) + Math.Abs(position_offsets[i]);
+                            value = Math.Max(value, child);
+                        }
+                        // AI turn - MIN
+                        else
+                        {
+                            int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1) + position_offsets[i];
+                            value = Math.Min(value, child);
+                        }
                     }
                 }
                 return value;

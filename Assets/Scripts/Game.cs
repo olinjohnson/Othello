@@ -24,6 +24,39 @@ public class Game
         return false;
     }
 
+    public int getWinner(Board b)
+    {
+        // Count set bits
+        int w_count = 0;
+        int b_count = 0;
+        ulong black = b.black_pieces;
+        ulong white = b.white_pieces;
+
+        while (black > 0)
+        {
+            b_count += (int)(black & 1);
+            black >>= 1;
+        }
+        while (white > 0)
+        {
+            w_count += (int)(white & 1);
+            white >>= 1;
+        }
+
+        if(w_count > b_count)
+        {
+            return 0;
+        }
+        else if(b_count > w_count)
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
+    }
+
     public ulong GetValidMoves(Board b)
     {
         ulong valid_moves = 0;
