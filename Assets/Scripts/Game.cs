@@ -158,7 +158,7 @@ public class Game
     {
         if(!b.turn)
         {
-            Minimax algo = new Minimax(10);
+            Minimax algo = new Minimax(PlayerPrefs.searchDepth);
             int idealMove = algo.FindIdealMove(b);
             return MakeMove(b, idealMove);
         }

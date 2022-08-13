@@ -21,6 +21,7 @@ public class BoardBehavior : MonoBehaviour
 
     public TextMeshProUGUI turnTextTitle;
     public TextMeshProUGUI turnTextSubtitle;
+    public TextMeshProUGUI statsText;
 
     public static Board board;
     public static Game game;
@@ -34,22 +35,12 @@ public class BoardBehavior : MonoBehaviour
 
         if(PlayerPrefs.AIOpponent)
         {
-            InitiateAIGame();
+            StartCoroutine(AIMoveCycle());
         }
         else
         {
-            InitiatePlayerGame();
+            StartCoroutine(PlayerMoveCycle());
         }
-    }
-
-
-    void InitiateAIGame()
-    {
-        StartCoroutine(AIMoveCycle());
-    }
-    void InitiatePlayerGame()
-    {
-        StartCoroutine(PlayerMoveCycle());
     }
 
     IEnumerator AIMoveCycle()
@@ -74,6 +65,10 @@ public class BoardBehavior : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                     board = game.MakeAIMove(board);
                     UpdateBoard(board);
+                    if(PlayerPrefs.showStats)
+                    {
+                        statsText.text = $"Nodes searched: {PlayerPrefs.nodesSearched} - Time: {PlayerPrefs.timeSearched}ms";
+                    }
                 }
             }
             // Black to move

@@ -2,11 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class SceneBehavior : MonoBehaviour
 {
     public GameObject mainMenu;
     public GameObject optionsMenu;
+
+    public TextMeshProUGUI captionHead;
+
+    public Slider depthSlider;
+    public Toggle statsToggle;
 
     public void LoadAIGame()
     {
@@ -24,12 +31,25 @@ public class SceneBehavior : MonoBehaviour
         {
             mainMenu.SetActive(false);
             optionsMenu.SetActive(true);
+            depthSlider.value = PlayerPrefs.searchDepth;
+            statsToggle.isOn = PlayerPrefs.showStats;
         }
         else
         {
+            UpdatePrefs();
             optionsMenu.SetActive(false);
             mainMenu.SetActive(true);
+
         }
+    }
+    public void UpdatePrefs()
+    {
+        PlayerPrefs.searchDepth = (int)depthSlider.value;
+        PlayerPrefs.showStats = statsToggle.isOn;
+    }
+    public void DepthSliderUpdate()
+    {
+        captionHead.text = $"AI Search Depth: {depthSlider.value}";
     }
     public void BackToMenu()
     {
