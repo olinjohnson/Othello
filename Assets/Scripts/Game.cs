@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Game
 {
-    // Mask order: N, W, S, E
-    public ulong[] direction_masks = { 0x7F7F7F7F7F7F7F7F, 0x00FFFFFFFFFFFFFF, 0xFEFEFEFEFEFEFEFE, 0xFFFFFFFFFFFFFF00 };
-    public int[] direction_offsets = { 1, 8 };
+    // Mask order: N, W, NW, SW, S, E, SE, NE
+    public ulong[] direction_masks = { 0x7F7F7F7F7F7F7F7F, 0x00FFFFFFFFFFFFFF, 0x007F7F7F7F7F7F7F, 0x00FEFEFEFEFEFEFE, 0xFEFEFEFEFEFEFEFE, 0xFFFFFFFFFFFFFF00, 0xFEFEFEFEFEFEFE00, 0x7F7F7F7F7F7F7F00};
+    public int[] direction_offsets = { 1, 8, 9, 7 };
 
     public bool DetectEnding(Board b)
     {
@@ -74,7 +74,7 @@ public class Game
             oPieces = b.black_pieces;
         }
         // North + West moves
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 4; i++)
         {
             ulong neighbor = ((pPieces & direction_masks[i]) << direction_offsets[i]) & oPieces;
 
@@ -85,11 +85,11 @@ public class Game
                 neighbor = acreage & oPieces;
             }
 
-            neighbor = ((pPieces & direction_masks[i + 2]) >> direction_offsets[i]) & oPieces;
+            neighbor = ((pPieces & direction_masks[i + 4]) >> direction_offsets[i]) & oPieces;
 
             while (neighbor > 0)
             {
-                ulong acreage = (neighbor & direction_masks[i + 2]) >> direction_offsets[i];
+                ulong acreage = (neighbor & direction_masks[i + 4]) >> direction_offsets[i];
                 valid_moves |= acreage & empty_tiles;
                 neighbor = acreage & oPieces;
             }
@@ -120,7 +120,7 @@ public class Game
         // Execute flip rays
         // Room for optimization
         ulong flippers = 0;
-        for(int i = 0; i < 2; i++)
+        for(int i = 0; i < 4; i++)
         {
             ulong acreage = (mask & direction_masks[i]) << direction_offsets[i];
             ulong temp_flippers = 0;
@@ -135,13 +135,13 @@ public class Game
                 flippers |= temp_flippers;
             }
 
-            acreage = (mask & direction_masks[i + 2]) >> direction_offsets[i];
+            acreage = (mask & direction_masks[i + 4]) >> direction_offsets[i];
             temp_flippers = 0;
 
             while ((acreage & oPieces) > 0)
             {
                 temp_flippers |= acreage & oPieces;
-                acreage = (acreage & direction_masks[i + 2]) >> direction_offsets[i];
+                acreage = (acreage & direction_masks[i + 4]) >> direction_offsets[i];
             }
             if ((acreage & pPieces) > 0)
             {
