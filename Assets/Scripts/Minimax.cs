@@ -34,6 +34,8 @@ public class Minimax
 
         ulong valid_moves = game.GetValidMoves(b);
         int least = 10000;
+        int alpha = -10000;
+        int beta = 10000;
         int[] scores = new int[64];
         Array.Fill(scores, 10000);
 
@@ -41,7 +43,7 @@ public class Minimax
         {
             if ((valid_moves & ((ulong)1 << i)) > 0)
             {
-                int val = Run(game.MakeMove(b, i), depth, 1) + position_offsets[i];
+                int val = Run(game.MakeMove(b, i), depth, 1, alpha, beta) + position_offsets[i];
                 least = Math.Min(least, val);
                 scores[i] = val;
             }
@@ -55,7 +57,7 @@ public class Minimax
         return Array.IndexOf(scores, least);
     }
 
-    public int Run(Board ghostMove, int d, int current_d)
+    public int Run(Board ghostMove, int d, int current_d, int alpha, int beta)
     {
         nodes_searched++;
         // Check for terminal state
@@ -74,7 +76,7 @@ public class Minimax
             // If no valid moves
             if(valid_moves == 0)
             {
-                return Run(new Board(ghostMove.white_pieces, ghostMove.black_pieces, !ghostMove.turn), d, current_d + 1);
+                return Run(new Board(ghostMove.white_pieces, ghostMove.black_pieces, !ghostMove.turn), d, current_d + 1, alpha, beta);
             }
             else
             {
@@ -84,17 +86,30 @@ public class Minimax
                 {
                     if ((valid_moves & ((ulong)1 << i)) > 0)
                     {
+
                         // Player turn - MAX 
                         if (ghostMove.turn)
                         {
-                            int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1) + Math.Abs(position_offsets[i]);
+                            int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1, alpha, beta) + Math.Abs(position_offsets[i]);
                             value = Math.Max(value, child);
+
+                            beta = Math.Min(beta, child);
+                            if(beta < alpha)
+                            {
+                                return value;
+                            }
                         }
                         // AI turn - MIN
                         else
                         {
-                            int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1) + position_offsets[i];
+                            int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1, alpha, beta) + position_offsets[i];
                             value = Math.Min(value, child);
+
+                            alpha = Math.Max(alpha, child);
+                            if(alpha > beta)
+                            {
+                                return value;
+                            }
                         }
                     }
                 }
