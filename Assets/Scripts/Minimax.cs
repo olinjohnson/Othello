@@ -92,24 +92,16 @@ public class Minimax
                         {
                             int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1, alpha, beta) + Math.Abs(position_offsets[i]);
                             value = Math.Max(value, child);
-
-                            beta = Math.Min(beta, child);
-                            if(beta < alpha)
-                            {
-                                return value;
-                            }
+                            alpha = Math.Max(alpha, value);
+                            if(alpha >= beta) { break; }
                         }
                         // AI turn - MIN
                         else
                         {
                             int child = Run(game.MakeMove(ghostMove, i), d, current_d + 1, alpha, beta) + position_offsets[i];
                             value = Math.Min(value, child);
-
-                            alpha = Math.Max(alpha, child);
-                            if(alpha > beta)
-                            {
-                                return value;
-                            }
+                            beta = Math.Min(beta, value);
+                            if (alpha >= beta) { break; }
                         }
                     }
                 }

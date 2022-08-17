@@ -73,7 +73,6 @@ public class Game
             pPieces = b.white_pieces;
             oPieces = b.black_pieces;
         }
-        // North + West moves
         for (int i = 0; i < 4; i++)
         {
             ulong neighbor = ((pPieces & direction_masks[i]) << direction_offsets[i]) & oPieces;
