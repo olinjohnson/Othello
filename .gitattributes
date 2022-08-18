@@ -1,1 +1,2 @@
-Assets/TextMesh\ Pro/** linguist-vendored=false
+*.shader linguist-detectable=false
+*.cginc linguist-detectable=false
