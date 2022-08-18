@@ -55,4 +55,8 @@ public class SceneBehavior : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
+    public void OpenRulesWebPage()
+    {
+        Application.OpenURL("https://www.worldothello.org/about/about-othello/othello-rules/official-rules/english");
+    }
 }
