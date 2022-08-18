@@ -7,3 +7,5 @@ The AI opponent uses Negamax with Alpha-Beta pruning to compute the ideal move, 
 Made with unity.
 
 Check out release [v1.0.0](https://github.com/olinjohnson/Othello/releases/tag/v1.0.0)
+
+![othello gameplay](Assets/othello-frame.png)
