@@ -399,7 +399,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Ai search depth: 10'
+  m_text: 'Ai search depth: 9'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c9cebc1ee783c4c738cd3fef35731a04, type: 2}
   m_sharedMaterial: {fileID: -2533076812254693505, guid: c9cebc1ee783c4c738cd3fef35731a04, type: 2}
@@ -1751,8 +1751,8 @@ RectTransform:
   m_Father: {fileID: 1622215521}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.6, y: 0}
-  m_AnchorMax: {x: 0.6, y: 1}
+  m_AnchorMin: {x: 0.53333336, y: 0}
+  m_AnchorMax: {x: 0.53333336, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2454,7 +2454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 203.98, y: -2.4397168}
+  m_AnchoredPosition: {x: 203.98, y: -46}
   m_SizeDelta: {x: 205.85, y: 28.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1600588261
@@ -2539,7 +2539,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.6, y: 1}
+  m_AnchorMax: {x: 0.53333336, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2707,7 +2707,7 @@ MonoBehaviour:
   m_MinValue: 1
   m_MaxValue: 16
   m_WholeNumbers: 1
-  m_Value: 10
+  m_Value: 9
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3400,8 +3400,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Note: Too high of a search depth could cause performance issues. 10 is
-    recommended.'
+  m_text: 'Note: Too high of a search depth could cause performance issues. 9 is
+    recommended. Decreasing the search depth will make it easier.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c9cebc1ee783c4c738cd3fef35731a04, type: 2}
   m_sharedMaterial: {fileID: -2533076812254693505, guid: c9cebc1ee783c4c738cd3fef35731a04, type: 2}

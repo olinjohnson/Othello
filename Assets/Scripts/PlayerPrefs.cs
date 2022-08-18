@@ -1,8 +1,6 @@
-﻿using System;
-
-public class PlayerPrefs
+﻿public class PlayerPrefs
 {
-    public static int searchDepth = 10;
+    public static int searchDepth = 9;
     public static bool showStats = false;
 
     public static bool AIOpponent = true;

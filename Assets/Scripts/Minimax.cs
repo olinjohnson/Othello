@@ -35,6 +35,7 @@ public class Minimax
 
         ulong valid_moves = game.GetValidMoves(b);
         int most = -10000;
+
         int[] scores = new int[64];
         Array.Fill(scores, -10000);
 
@@ -42,7 +43,7 @@ public class Minimax
         {
             if ((valid_moves & ((ulong)1 << i)) > 0)
             {
-                int val = -Run(game.MakeMove(b, i), depth - 1, -1) + position_offsets[i];
+                int val = -Run(game.MakeMove(b, i), depth - 1, -10000, 10000, -1) + position_offsets[i];
                 most = Math.Max(most, val);
                 scores[i] = val;
             }
@@ -56,26 +57,26 @@ public class Minimax
         return Array.IndexOf(scores, most);
     }
 
-    public int Run(Board ghostMove, int d, int color)
+    public int Run(Board ghostMove, int d, int alpha, int beta, int color)
     {
         nodes_searched++;
         // Check for terminal state
-        if(game.DetectEnding(ghostMove))
+        if (game.DetectEnding(ghostMove))
         {
-            return (Evaluate(ghostMove, d) + (d * color)) * 100;
+            return (Evaluate(ghostMove) + (d * color)) * 100;
         }
         // Check if max depth reached
-        else if(d == 0)
+        else if (d == 0)
         {
-            return Evaluate(ghostMove, d) + (d * color);
+            return Evaluate(ghostMove) + (d * color);
         }
         else
         {
             ulong valid_moves = game.GetValidMoves(ghostMove);
             // If no valid moves
-            if(valid_moves == 0)
+            if (valid_moves == 0)
             {
-                return -Run(new Board(ghostMove.white_pieces, ghostMove.black_pieces, !ghostMove.turn), d - 1, -color);
+                return -Run(new Board(ghostMove.white_pieces, ghostMove.black_pieces, !ghostMove.turn), d - 1, -beta, -alpha, -color);
             }
             else
             {
@@ -84,8 +85,10 @@ public class Minimax
                 {
                     if ((valid_moves & ((ulong)1 << i)) > 0)
                     {
-                        int child = -Run(game.MakeMove(ghostMove, i), d - 1, -color) + position_offsets[i];
+                        int child = -Run(game.MakeMove(ghostMove, i), d - 1, -beta, -alpha, -color) + position_offsets[i];
                         value = Math.Max(value, child);
+                        alpha = Math.Max(alpha, value);
+                        if (alpha > beta) { break; }
                     }
                 }
                 return value;
@@ -93,7 +96,7 @@ public class Minimax
         }
     }
 
-    int Evaluate(Board b, int current_d)
+    int Evaluate(Board b)
     {
         // Count set bits
         int w_count = 0;
