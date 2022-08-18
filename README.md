@@ -1,7 +1,9 @@
 # Othello
 
-This is a clone of the game othello, also known as reversi.
+This is a clone of the game Othello, also known as Reversi.
 
-The AI opponent uses minimax with alpha-beta pruning to compute the ideal move.
+The AI opponent uses Negamax with Alpha-Beta pruning to compute the ideal move, as well as BitBoards for added speed.
 
 Made with unity.
+
+Check out release [v1.0.0](https://github.com/olinjohnson/Othello/releases/tag/v1.0.0)
