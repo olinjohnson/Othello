@@ -8,4 +8,6 @@ Made with unity.
 
 Check out release [v1.0.0](https://github.com/olinjohnson/Othello/releases/tag/v1.0.0)
 
+Supplementary blog post [on my website](https://olinjohnson.github.io/posts/optimizations-using-bitboards/)
+
 ![othello gameplay](Assets/othello-frame.png)
